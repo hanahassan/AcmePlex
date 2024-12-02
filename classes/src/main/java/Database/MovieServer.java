@@ -24,7 +24,7 @@ public class MovieServer {
         // Register search handler
         server.createContext("/movies/search", new SearchHandler());
 
-
+        
         
         // Set the server's executor and start it
         server.setExecutor(null);
@@ -236,6 +236,4 @@ class TheatreHandler implements HttpHandler {
         }
         return moviesJson;
     }
-
-
 }

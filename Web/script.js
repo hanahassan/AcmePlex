@@ -412,7 +412,11 @@ function fetchTheatres() {
             });
         })
         .catch(error => console.error('Error fetching theatres:', error));
-}document.addEventListener("DOMContentLoaded", () => {
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
     const searchForm = document.getElementById("searchForm");
     const searchInput = document.getElementById("searchInput");
     const searchResults = document.getElementById("searchResults");
@@ -446,8 +450,17 @@ function fetchTheatres() {
                                     movieItem.classList.add("movie-item");
                                     movieItem.innerHTML = `
                                         <h3>${movie.title}</h3>
+                                        <button class="view-showtimes-button" data-movie-id="${movie.id}">View Showtimes</button>
                                     `;
                                     searchResults.appendChild(movieItem);
+                                });
+
+                                // Add click event listeners for each movie
+                                document.querySelectorAll(".view-showtimes-button").forEach(button => {
+                                    button.addEventListener("click", (e) => {
+                                        const movieId = e.target.getAttribute("data-movie-id");
+                                        window.location.href = `showtimes.html?movie_id=${movieId}`;
+                                    });
                                 });
                             } else {
                                 searchResults.innerHTML = `<p>No results found for "${query}".</p>`;
