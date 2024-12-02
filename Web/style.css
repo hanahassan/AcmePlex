@@ -1,0 +1,1219 @@
+/* General Styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #000;
+	color: #fff;
+	overflow-x: hidden;
+}
+
+/* Header Styling */
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #000;
+	z-index: 2000;
+	padding: 10px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #333;
+	overflow: hidden;
+}
+
+/* Navbar */
+.navbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	width: 100%;
+	list-style: none;
+}
+
+/* Logo Styling */
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+.logo img {
+	height: 65px;
+	max-width: 100%;
+	transition: height 0.3s ease;
+}
+
+/* Navbar Right Section */
+.navbar-right {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.navbar li a {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+	transition: color 0.3s ease;
+}
+
+.navbar li a:hover {
+	color: #2f62e2;
+}
+
+/* Account Section Dropdown */
+.account-section {
+	position: fixed;
+	top: calc(100% + 10px);
+	right: 0;
+	width: 50%;
+	max-width: 100%;
+	height: calc(100vh - 60px);
+	background: linear-gradient(to bottom, #000000, #002244);
+	color: #ffffff;
+	padding: 60px 20px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+	transform: translateX(100%);
+	transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+}
+
+.account-section.active {
+	transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+	.account-section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+	}
+}
+
+/* Account Section Content Styling */
+.account-section h2 {
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	margin-bottom: 20px;
+}
+
+.account-section button.login-button {
+	width: 100%;
+	padding: 15px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #1e90ff;
+	border: none;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out;
+}
+
+.account-section button.login-button:hover {
+	background-color: #0066cc;
+}
+
+.account-section .create-account {
+	text-align: center;
+	font-size: 16px;
+	color: #ffffff;
+	margin-bottom: 40px;
+}
+
+.account-section .create-account a {
+	color: #1e90ff;
+	font-weight: bold;
+	text-decoration: none;
+	transition: color 0.3s ease-in-out;
+}
+
+.account-section .create-account a:hover {
+	color: #0066cc;
+}
+
+/* Close Button */
+.account-section .close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 24px;
+	background: none;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+}
+
+.account-section .close-button:hover {
+	color: #ff0000;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 1024px) {
+	.account-section {
+		width: 50%;
+	}
+}
+
+@media (max-width: 1024px) {
+	.account-section {
+		width: 100%;
+		left: 0;
+		right: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.account-section {
+		width: 100%;
+		left: 0;
+		right: 0;
+	}
+
+	.account-section .close-button {
+		font-size: 20px;
+	}
+}
+
+/* Prevent Horizontal Overflow */
+html,
+body {
+	width: 100%;
+	overflow-x: hidden;
+}
+
+/* Hidden class to toggle visibility */
+.hidden {
+	display: none;
+}
+
+/* Ensure checkbox and label are inline */
+#loginForm .checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+    margin-bottom: 10px;
+}
+
+#loginForm .checkbox-container input[type="checkbox"] {
+    margin-right: 8px; /* Spacing between checkbox and label */
+    width: 16px; /* Ensure consistent size */
+    height: 16px; /* Ensure consistent size */
+    accent-color: #0056b3; /* Customize checkbox color */
+}
+
+#loginForm .checkbox-container label {
+    font-size: 14px;
+    color: #fff; /* Keep label color consistent with the theme */
+    line-height: 1; /* Ensure vertical alignment matches checkbox */
+}
+
+@media (max-width: 600px) {
+    #loginForm .checkbox-container {
+        flex-direction: row; /* Ensure it stays horizontal on small screens */
+    }
+}
+
+/* Centered Text Styling */
+.centered-text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 15px;
+	text-align: center;
+}
+
+.centered-text p {
+	margin: 0;
+	font-size: 14px;
+	color: #fff;
+}
+
+.create-account-link {
+	color: #007bff;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.create-account-link:hover {
+	text-decoration: underline;
+	color: #0056b3;
+}
+
+/* Profile Section Styling */
+.profile-link {
+    text-decoration: none; /* Remove underline */
+}
+
+.profile-link:focus,
+.profile-link:active {
+    text-decoration: none; /* Ensure underline doesn't appear on focus or click */
+}
+
+.profile-section {
+	padding: 20px;
+	border-radius: 8px;
+	background: linear-gradient(to bottom, #000, #002244);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	color: #fff;
+	text-align: left;
+	margin: 20px auto;
+	width: 90%;
+	max-width: 500px;
+}
+
+.profile-header {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.profile-header h2 {
+	font-size: 24px;
+	color: #fff;
+	margin-bottom: 5px;
+}
+
+.profile-header p {
+	font-size: 16px;
+	color: #ccc;
+}
+
+.profile-options {
+	border-top: 1px solid #444;
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.profile-item {
+	border-top: 1px solid #333;
+	padding: 15px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+}
+
+.profile-item h3 {
+	font-size: 18px;
+	color: #fff;
+	margin-bottom: 5px;
+}
+
+.profile-item p {
+	font-size: 14px;
+	color: #999;
+}
+
+.profile-item:hover {
+	background-color: #111;
+}
+
+.login-button {
+	background-color: #0056b3;
+	color: #fff;
+	padding: 15px;
+	width: 100%;
+	border: none;
+	font-size: 18px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+.login-button:hover {
+	background-color: #003f8a;
+}
+
+
+/* Signup Button */
+.signup-button {
+	background-color: #1e90ff;
+	color: #fff;
+	padding: 15px;
+	width: 100%;
+	border: none;
+	font-size: 18px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.signup-button:hover {
+	background-color: #003f8a;
+}
+
+/* Shared styles for input fields */
+form input {
+	padding: 10px;
+	width: 100%;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+form label {
+	margin-bottom: 5px;
+	display: block;
+	color: #fff;
+	font-weight: bold;
+}
+
+
+/* Responsive Design */
+
+/* half screen */
+@media (max-width: 1024px) {
+	.navbar {
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	.navbar-right {
+		width: 100%;
+		justify-content: space-around;
+		margin-top: 10px;
+	}
+
+	.menu-item a span {
+		display: none;
+	}
+
+	.logo {
+		position: static;
+		transform: none;
+		margin: 0 auto;
+	}
+}
+
+/* ~third of screen */
+@media (max-width: 480px) {
+	.logo img {
+		height: 30px;
+	}
+
+	.navbar-right {
+		justify-content: center;
+		gap: 10px;
+	}
+}
+
+/* less than 600px -> shrink logo */
+@media (max-width: 600px) {
+	.logo img {
+		height: 50px;
+	}
+}
+
+/* Theatres List Section */
+.theatres-list {
+	margin: 20px;
+	padding: 20px;
+	background-color: #111;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	text-align: center;
+}
+
+h2 {
+	font-size: 24px;
+	margin-bottom: 20px;
+	color: #fff;
+}
+
+/* Theatre Buttons */
+.theatre-button {
+	display: block;
+	width: 100%;
+	padding: 20px;
+	margin-bottom: 15px;
+	background-color: #333;
+	color: #fff;
+	border: 2px solid #444;
+	border-radius: 8px;
+	text-align: center;
+	font-size: 18px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, border 0.3s ease;
+	text-decoration: none;
+}
+
+.theatre-button:hover {
+	background-color: #555;
+	border-color: #777;
+}
+
+.theatre-name {
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.location {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.theatre-button {
+		font-size: 16px;
+	}
+
+	.theatre-name {
+		font-size: 20px;
+	}
+
+	.location {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.theatre-button {
+		font-size: 14px;
+		padding: 15px;
+	}
+
+	.theatre-name {
+		font-size: 18px;
+	}
+
+	.location {
+		font-size: 10px;
+	}
+}
+
+/* Movie Section Styling */
+#movie-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 20px; /* Spacing between movie items */
+	/* margin: 20px; */
+}
+
+/* Styling for each movie item */
+.movie-item {
+	width: calc(50% - 10px);
+	margin-bottom: 70px;
+	border-radius: 8px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.movie-item:hover {
+	transform: scale(1.06);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Movie Image */
+.movie-item img {
+	width: 40%;
+	height: auto;
+	border-radius: 8px;
+	margin-bottom: 15px;
+}
+
+/* Button styling */
+.movie-item button {
+	padding: 10px 20px;
+	background-color: #2f62e2;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.movie-item button:hover {
+	background-color: #1f46b4;
+}
+
+/* Message displayed when no theatre is selected */
+#message {
+	display: none;
+	color: maroon;
+	text-align: center;
+	font-size: 18px;
+	margin-top: 20px;
+}
+
+main h1 {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 32px;
+	color: #fff;
+}
+
+/* Showtime Section */
+
+#showtimes-list {
+	display: flex;
+	flex-direction: column;
+	justify-content: center; /* Center horizontally */
+	align-items: center; /* Center vertically */
+	height: 100vh; /* Full height of the viewport */
+	margin: 0; /* Remove default margin */
+	gap: 20px;
+}
+
+.showtime-item {
+	background-color: #222;
+	padding: 20px;
+	width: 50%;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.showtime-item h3 {
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #fff;
+}
+
+.showtime-item ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.showtime-item ul li {
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+
+.showtime-item button {
+	background-color: #2f62e2;
+	color: white;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 16px;
+	transition: background-color 0.3s ease;
+}
+
+.showtime-item button:hover {
+	background-color: #1f46b4;
+}
+
+/* Search Section Styling */
+.search-section {
+	padding: 20px;
+	margin-top: 20px;
+}
+
+.search-section h1 {
+	font-size: 24px;
+	margin-bottom: 20px;
+	color: #fff;
+}
+
+.search-section form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.search-section input {
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.search-section button.search-button {
+	padding: 10px;
+	font-size: 16px;
+	background-color: #2f62e2;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.search-section button.search-button:hover {
+	background-color: #1f46b4;
+}
+
+/* Search Section */
+.search-section {
+	text-align: center;
+	padding: 20px;
+}
+
+.search-results {
+	margin-top: 20px;
+	text-align: left;
+}
+
+.movie-item {
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color: #000000;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.navbar {
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	.navbar-right {
+		width: 100%;
+		justify-content: space-around;
+		margin-top: 10px;
+	}
+
+	.menu-item a span {
+		display: none;
+	}
+
+	.logo {
+		position: static;
+		transform: none;
+		margin: 0 auto;
+	}
+
+	.search-section {
+		padding: 15px;
+		margin-top: 10px;
+	}
+
+	.search-section h1 {
+		font-size: 20px;
+	}
+
+	.search-section input {
+		font-size: 14px;
+	}
+
+	.search-section button.search-button {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.logo img {
+		height: 30px;
+	}
+
+	.navbar-right {
+		justify-content: center;
+		gap: 10px;
+	}
+
+	.search-section {
+		padding: 10px;
+		margin-top: 60px;
+	}
+
+	.search-section h1 {
+		font-size: 18px;
+	}
+
+	.search-section input {
+		font-size: 12px;
+	}
+
+	.search-section button.search-button {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 600px) {
+	.logo img {
+		height: 50px;
+	}
+}
+/* Movie Carousel */
+.container {
+	padding: 3rem;
+}
+
+.slider-wrapper {
+	position: relative;
+
+	margin: 0 auto;
+}
+
+.slider {
+	display: flex;
+	height: 50vh;
+	overflow: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
+}
+
+.slider img {
+	flex: 1 0 100%;
+	scroll-snap-align: start;
+	object-fit: cover;
+}
+
+.slider-nav {
+	display: flex;
+	column-gap: 1rem;
+	position: absolute;
+	bottom: 1.25rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1;
+}
+
+.slider-nav a {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background-color: #fff;
+	opacity: 0.75;
+	transition: opacity ease 250ms;
+}
+.slider-nav a:hover {
+	opacity: 1;
+}
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+	.slider {
+		height: 40vh;
+	}
+}
+
+@media (max-width: 768px) {
+	.slider {
+		height: 30vh;
+	}
+}
+
+@media (max-width: 480px) {
+	.slider {
+		height: 20vh;
+	}
+
+	.slider-nav {
+		bottom: 0.75rem;
+	}
+}
+
+/* Movies Section */
+.movies-section {
+	padding: 20px;
+	background-color: #000;
+	color: #fff;
+}
+
+.movies-section h2 {
+	font-size: 28px;
+	margin-bottom: 20px;
+	color: #fff;
+}
+
+.movie-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 20px;
+}
+
+.movie-card {
+	background-color: #222;
+	border-radius: 8px;
+	overflow: hidden;
+	text-align: center;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.movie-card img {
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
+}
+
+.movie-card h3 {
+	font-size: 16px;
+	margin: 10px 0;
+	color: #fff;
+}
+
+.watch-trailer {
+	color: #2f62e2;
+	text-decoration: none;
+	font-size: 14px;
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+.watch-trailer:hover {
+	text-decoration: underline;
+}
+
+/* General Styles */
+.account-info-page {
+	max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #000;
+  }
+  
+  h1 {
+	text-align: center;
+	margin-bottom: 20px;
+  }
+  
+  .tabs {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+  }
+  
+  .tab {
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	background: #f0f0f0;
+	border-radius: 5px 5px 0 0;
+	margin-right: 5px;
+	font-weight: bold;
+  }
+  
+  .tab.active {
+	background: white;
+	border-bottom: 2px solid white;
+  }
+  
+  .tab-content {
+	display: block;
+	background: white;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 0 5px 5px 5px;
+  }
+  
+  .tab-content.hidden {
+	display: none;
+  }
+
+  #personalInfoForm label {
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 8px;
+	color: #333;
+  }
+  
+  /* General Styling */
+#paymentInfoSection {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px;
+	background: #fff;
+  }
+  
+  #paymentInfoSection h2 {
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: bold;
+  }
+  
+  #addPaymentForm label {
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 8px;
+	color: #333;
+  }
+  
+  #addPaymentForm input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+  }
+  
+  .card-number-container {
+	display: flex;
+	align-items: center;
+  }
+  
+  .card-number-container input {
+	flex: 1;
+	margin-right: 10px;
+  }
+  
+  
+  .security-note {
+	font-size: 12px;
+	color: #666;
+	margin-top: -15px;
+	margin-bottom: 20px;
+  }
+  
+  button.login-button {
+	width: 100%;
+	padding: 15px;
+	background-color: #1e90ff;
+	color: #fff;
+	font-size: 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  button.login-button:hover {
+	background-color: #003f8a;
+  }
+  
+  /* Main Orders Page Styling */
+/* Styling for Orders Page */
+
+.orders-page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 80px;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.credits {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #1e90ff;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+#orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.orders-page h1{
+	padding-top: 20px;
+	color: #000;
+}
+
+.order-card {
+    background-color: #f9f9f9;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.order-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.order-card strong {
+    color: #000;
+}
+
+.order-card .confirmed {
+    color: green;
+    font-weight: bold;
+}
+
+.order-card .cancelled {
+    color: red;
+    font-weight: bold;
+}
+
+
+
+/* CSS for Seat Map */
+
+/* Seat Container Styling */
+.seat-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+}
+
+.seat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Increase gap between rows */
+    align-items: center;
+    margin: 0 auto; /* Center horizontally */
+    max-width: 600px; /* Increase size of the container */
+}
+
+/* Individual Seat Row */
+.seat-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Seat Buttons */
+.seat {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.2s ease;
+}
+
+/* Available Seat */
+.seat.available {
+    background-color: #4c95af;
+}
+
+/* Hover Effect for Available Seats */
+.seat.available:hover {
+    transform: scale(1.1);
+    background-color: #5ebddf;
+}
+
+/* Occupied Seat */
+.seat.occupied {
+    background-color: #293142;
+    cursor: not-allowed;
+}
+
+/* Selected Seat */
+.seat.selected {
+    background-color: #1a353f;
+}
+
+/* Proceed Button */
+.proceed-button {
+    display: block;
+    margin: 20px auto;
+	margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Proceed Button Hover */
+.proceed-button:hover {
+    background-color: #1e90ff;
+}
+
+/* Screen Indicator Styling */
+.screen-indicator {
+    width: 20%; /* Reduce the width to make it proportional */
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto 20px; /* Adjust spacing */
+    background-color: #293142; /* Dark background */
+    color: #fff; /* White text */
+    font-size: 18px; /* Visible text size */
+    font-weight: bold; /* Bold text */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+}
+
+/* Payment Page */
+.payment-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+	padding-top: 40px; 
+    font-family: Arial, sans-serif;
+}
+
+.payment-page h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.payment-page p {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.payment-page #payment-form {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for the form */
+    width: 400px; /* Fixed width */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-page #payment-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1rem;
+	color: #333;
+}
+
+.payment-page #payment-form input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.payment-page #payment-form button {
+    padding: 10px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.payment-page #payment-form button:hover {
+    background-color: #0056b3;
+}
+
+.payment-page #selected-seats,
+.payment-page #showtime-id {
+    font-weight: bold;
+    color: #007bff;
+}
