@@ -35,29 +35,34 @@ public class MovieServer {
 }
 
 class MoviesHandler implements HttpHandler {
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         // Enable CORS
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");  // Allow all origins
-        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");  // Allowed HTTP methods
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");  // Allowed headers
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");  
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");  
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");  
         
         // Handle OPTIONS request (preflight request for CORS)
         if ("OPTIONS".equals(exchange.getRequestMethod())) {
-            exchange.sendResponseHeaders(200, -1);  // No content
+            exchange.sendResponseHeaders(200, -1);  
             return;
         }
-        
-        // For a GET request, fetch the movie data
+
         if ("GET".equals(exchange.getRequestMethod())) {
-            // Get the list of movies from the database
-            JSONArray moviesJson = getMoviesFromDatabase();
-            
-            // Convert movies data to string
-            String response = moviesJson.toString();
-            
+            // Parse the query parameters to get the theatre_id
+            URI requestURI = exchange.getRequestURI();
+            String query = requestURI.getQuery();
+            int theatreId = -1;
+
+            if (query != null && query.contains("theatre_id=")) {
+                theatreId = Integer.parseInt(query.split("=")[1]);
+            }
+
+            // Fetch the movies for the given theatre ID or all movies if no ID is provided
+            JSONArray moviesJson = (theatreId != -1) ? getMoviesByTheaterID(theatreId) : getMoviesFromDatabase();
+
             // Send the response
+            String response = moviesJson.toString();
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
@@ -67,25 +72,46 @@ class MoviesHandler implements HttpHandler {
             exchange.sendResponseHeaders(405, -1);
         }
     }
-    
+
+    // Your existing method to fetch movies based on the theatre ID
+    private JSONArray getMoviesByTheaterID(int theatreId) {
+        JSONArray moviesJson = new JSONArray();
+        
+        try (Connection conn = DatabaseConnection.connect()) {
+            String sql = "SELECT M.MovieID, M.Title FROM Movies M " +
+                         "JOIN Showtimes S ON M.MovieID = S.MovieID " +
+                         "WHERE S.TheatreID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, theatreId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                JSONObject movieJson = new JSONObject();
+                movieJson.put("id", rs.getInt("MovieID"));
+                movieJson.put("title", rs.getString("Title"));
+                moviesJson.put(movieJson);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return moviesJson;
+    }
+
+    // Your existing method to fetch all movies
     private JSONArray getMoviesFromDatabase() {
         JSONArray moviesJson = new JSONArray();
         
-        // Your database connection logic here (example with JDBC)
         try (Connection conn = DatabaseConnection.connect()) {
             String query = "SELECT MovieID, Title FROM Movies";  // Example query to fetch movies
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             
             while (rs.next()) {
-                // Create a JSONObject for each movie
                 JSONObject movieJson = new JSONObject();
                 movieJson.put("id", rs.getInt("MovieID"));
                 movieJson.put("title", rs.getString("Title"));
-                
-                // Add to the movies array
                 moviesJson.put(movieJson);
-                
             }
         } catch (SQLException e) {
             e.printStackTrace();
