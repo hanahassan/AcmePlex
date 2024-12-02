@@ -172,6 +172,49 @@ const movies = [
     { title: "Frozen", genre: "Animation" },
 ];
 
+// // Function to handle movie search
+// function searchMovies() {
+//     const searchInput = document.getElementById("searchInput").value.toLowerCase();
+//     const searchResults = document.getElementById("searchResults");
+//     searchResults.innerHTML = ""; // Clear previous results
+
+//     const filteredMovies = movies.filter((movie) =>
+//         movie.title.toLowerCase().includes(searchInput)
+//     );
+
+//     if (filteredMovies.length === 0) {
+//         searchResults.innerHTML = "<p>No movies found.</p>";
+//         return;
+//     }
+
+//     // Display filtered movies
+//     filteredMovies.forEach((movie) => {
+//         const movieItem = document.createElement("div");
+//         movieItem.classList.add("movie-item");
+//         movieItem.innerHTML = `
+//             <h3>${movie.title}</h3>
+//             <p>Genre: ${movie.genre}</p>
+//             <button class="select-movie-button" onclick="selectMovie(${movie.id})">Select Movie</button>
+//         `;
+//         searchResults.appendChild(movieItem);
+//     });
+// }
+
+// // Function to redirect to the showtimes page for a selected movie
+// function selectMovie(movieId) {
+//     window.location.href = `showtimes.html?movie_id=${movieId}`;
+// }
+
+// // Add event listener for search input
+// document.getElementById("searchButton").addEventListener("click", searchMovies);
+
+// // Optionally, handle "Enter" key for search
+// document.getElementById("searchInput").addEventListener("keypress", (event) => {
+//     if (event.key === "Enter") {
+//         searchMovies();
+//     }
+// });
+
 document.addEventListener("DOMContentLoaded", () => {
     const searchForm = document.getElementById("searchForm");
     const searchInput = document.getElementById("searchInput");
@@ -198,6 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         movieItem.innerHTML = `
                             <h3>${movie.title}</h3>
                             <p>Genre: ${movie.genre}</p>
+                            <button class="select-movie-button" onclick="selectMovie(${movie.id})">Select Movie</button>
                         `;
                         searchResults.appendChild(movieItem);
                     });
@@ -211,6 +255,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Function to handle "Select Movie" action
+function selectMovie(movieId) {
+    window.location.href = `showtimes.html?movie_id=${movieId}`;
+}
 
 // Populate Personal Information
 function populatePersonalInfo() {
