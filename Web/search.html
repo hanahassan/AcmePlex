@@ -123,16 +123,18 @@
 		<main>
             <section class="search-section">
                 <h1>Search Movies</h1>
-                <form id="searchForm">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search for movies..."
-                        required
-                    />
-                    <button type="submit" class="search-button">Search</button>
-                </form>
-                <div id="searchResults" class="search-results"></div>
+                <form id="searchForm" aria-label="Search Movies">
+					<label for="searchInput"></label>
+					<input
+						type="text"
+						id="searchInput"
+						placeholder="Search for movies..."
+						required
+					/>
+					<button type="submit" class="search-button">Search</button>
+				</form>
+				<div id="searchResults" class="search-results"></div>
+				
             </section>
         </main>
 

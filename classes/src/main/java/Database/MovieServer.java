@@ -20,6 +20,11 @@ public class MovieServer {
 
         // Register movie handler
         server.createContext("/movies", new MoviesHandler());
+
+        // Register search handler
+        server.createContext("/movies/search", new SearchHandler());
+
+
         
         // Set the server's executor and start it
         server.setExecutor(null);
@@ -130,4 +135,81 @@ class TheatreHandler implements HttpHandler {
             }
         }
     }
+}class SearchHandler implements HttpHandler {
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        try {
+            // Add CORS headers
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+            // Handle OPTIONS request (preflight request)
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(200, -1); // No content
+                return;
+            }
+
+            if ("GET".equals(exchange.getRequestMethod())) {
+                String queryString = exchange.getRequestURI().getQuery();
+                if (queryString == null || !queryString.contains("q=")) {
+                    exchange.sendResponseHeaders(400, -1); // Bad Request
+                    return;
+                }
+
+                String query = queryString.split("q=")[1];
+                query = URLDecoder.decode(query, "UTF-8");
+
+                JSONArray results = searchMovies(query);
+
+                // Send JSON response
+                String response = results.toString();
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
+
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(response.getBytes());
+                }
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            exchange.sendResponseHeaders(500, -1); // Internal Server Error
+        }
+    }
+
+    private JSONArray searchMovies(String query) {
+        JSONArray moviesJson = new JSONArray();
+        try (Connection conn = DatabaseConnection.connect()) {
+            // Use SQL to check for all letters in the query
+            StringBuilder sqlBuilder = new StringBuilder("SELECT MovieID, Title FROM Movies WHERE Title LIKE ?");
+            for (int i = 1; i < query.length(); i++) {
+                sqlBuilder.append(" AND Title LIKE ?");
+            }
+
+            String sql = sqlBuilder.toString();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            // Set parameters for each character in the query
+            for (int i = 0; i < query.length(); i++) {
+                stmt.setString(i + 1, "%" + query.charAt(i) + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                JSONObject movieJson = new JSONObject();
+                movieJson.put("id", rs.getInt("MovieID"));
+                movieJson.put("title", rs.getString("Title"));
+                moviesJson.put(movieJson);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return moviesJson;
+    }
+
+
 }
