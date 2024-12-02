@@ -412,4 +412,58 @@ function fetchTheatres() {
             });
         })
         .catch(error => console.error('Error fetching theatres:', error));
-}
+}document.addEventListener("DOMContentLoaded", () => {
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
+
+    if (searchForm) {
+        searchForm.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            const query = searchInput.value.trim().toLowerCase(); // Get search query
+            searchResults.innerHTML = ""; // Clear previous results
+
+            if (query) {
+                fetch(`http://localhost:8080/movies/search?q=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(results => {
+                        searchResults.innerHTML = ""; // Clear previous results
+                        if (results.length > 0) {
+                            const filteredResults = results.filter(movie => {
+                                const title = movie.title.toLowerCase();
+                                return query.split('').every(char => title.includes(char));
+                            });
+
+                            if (filteredResults.length > 0) {
+                                filteredResults.forEach(movie => {
+                                    const movieItem = document.createElement("div");
+                                    movieItem.classList.add("movie-item");
+                                    movieItem.innerHTML = `
+                                        <h3>${movie.title}</h3>
+                                    `;
+                                    searchResults.appendChild(movieItem);
+                                });
+                            } else {
+                                searchResults.innerHTML = `<p>No results found for "${query}".</p>`;
+                            }
+                        } else {
+                            searchResults.innerHTML = `<p>No results found for "${query}".</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching search results:", error);
+                        searchResults.innerHTML = `<p>There was an error fetching search results. Please try again later.</p>`;
+                    });
+
+            } else {
+                searchResults.innerHTML = `<p>Please enter a search term.</p>`;
+            }
+        });
+    }
+});
