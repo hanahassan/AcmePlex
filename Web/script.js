@@ -335,7 +335,17 @@ document.addEventListener("DOMContentLoaded", () => {
         showProfile();
         accountSection.classList.remove("active");
     }
-    fetchMovies();  
+    const movieGrid = document.querySelector('.movie-grid');
+    
+    if (movieGrid) {
+        fetchMovies();
+    }
+
+    const theatresList = document.querySelector('.theatres-list');
+    
+    if (theatresList) {
+        fetchTheatres();
+    }
 });
 
 
@@ -380,4 +390,36 @@ function fetchMovies() {
             });
         })
         .catch(error => console.error('Error fetching movies:', error));
+}
+
+function fetchTheatres() {
+    // Fetch theatres from the backend API
+    fetch('http://localhost:8080/theatres')
+        .then(response => response.json())
+        .then(theatres => {
+            // Populate Theatre List
+            const theatresList = document.querySelector('.theatres-list');
+            theatresList.innerHTML = ''; // Clear existing content
+
+            theatres.forEach(theatre => {
+                const theatreButton = document.createElement('button');
+                theatreButton.classList.add('theatre-button');
+                theatreButton.setAttribute('aria-label', theatre.name);
+                theatreButton.setAttribute('data-testid', `theatre-id-${theatre.theatre_id}`);
+                theatreButton.onclick = () => {
+                    // Redirect to tickets page with the theatre_id as a query parameter
+                    window.location.href = `tickets.html?theatre_id=${theatre.theatre_id}`;
+                };
+                
+                // Adding theatre name and location to the button
+                theatreButton.innerHTML = `
+                    <div class="theatre-name">${theatre.name}</div>
+                    <div class="location">${theatre.location}</div>
+                `;
+                
+                // Append the new theatre button to the list
+                theatresList.appendChild(theatreButton);
+            });
+        })
+        .catch(error => console.error('Error fetching theatres:', error));
 }

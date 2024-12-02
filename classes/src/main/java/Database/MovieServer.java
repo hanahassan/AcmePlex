@@ -15,6 +15,9 @@ public class MovieServer {
         // Create the server that listens on port 8080
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         
+        // Create the "/theatres" context and associate it with TheatreHandler
+        server.createContext("/theatres", new TheatreHandler());
+
         // Register movie handler
         server.createContext("/movies", new MoviesHandler());
         
@@ -86,14 +89,45 @@ class MoviesHandler implements HttpHandler {
         return moviesJson;
     }
 }
+    
+class TheatreHandler implements HttpHandler {
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        // Enable CORS
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");  // Allow all origins
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");  // Allowed HTTP methods
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");  // Allowed headers
+        
+        // Handle OPTIONS request (preflight request for CORS)
+        if ("OPTIONS".equals(exchange.getRequestMethod())) {
+            exchange.sendResponseHeaders(200, -1);  // No content
+            return;
+        }
 
-class DatabaseConnection {
-    // Database connection details (example with MySQL)
-    private static final String URL = "jdbc:mysql://localhost:3306/AcmePlex";
-    private static final String USER = "root";
-    private static final String PASSWORD = "password1";  // Replace with your actual password
+        if ("GET".equals(exchange.getRequestMethod())) {
+            try {
+                List<String[]> theatres = DatabaseRetriever.getAllTheatres();  // or TheatreHandler.getAllTheatres()
+                JSONArray jsonTheatres = new JSONArray();
 
-    public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+                // Add each theatre to the JSON array
+                for (String[] theatre : theatres) {
+                    JSONObject theatreJson = new JSONObject();
+                    theatreJson.put("theatre_id", theatre[0]);
+                    theatreJson.put("name", theatre[1]);
+                    theatreJson.put("location", theatre[2]);
+                    jsonTheatres.put(theatreJson);
+                }
+
+                // Send the response with JSON
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, jsonTheatres.toString().getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(jsonTheatres.toString().getBytes());
+                os.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                exchange.sendResponseHeaders(500, -1);
+            }
+        }
     }
 }
