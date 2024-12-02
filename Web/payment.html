@@ -74,6 +74,29 @@
         <p><strong>Selected Seats:</strong> <span id="summary-selected-seats"></span></p>
         <p><strong>Total Price Paid:</strong> $<span id="summary-total-price"></span></p>
         <p><strong>Payment Status:</strong> Success</p>
+        <button id="cancel-ticket" style="display: inline-block;">Cancel Ticket</button>
+      </div>
+
+      <!-- View Tickets Section (If Any Ticket Exists) -->
+      <div id="view-ticket-section" style="display: none;">
+        <h2>Your Purchased Ticket</h2>
+        <p><strong>Showtime ID:</strong> <span id="view-showtime-id"></span></p>
+        <p><strong>Selected Seats:</strong> <span id="view-selected-seats"></span></p>
+        <p><strong>Total Price Paid:</strong> $<span id="view-total-price"></span></p>
+        <button id="cancel-purchased-ticket" style="display: inline-block;">Cancel Ticket</button>
+      </div>
+
+      <!-- Cancel Confirmation Message -->
+      <div id="cancel-confirmation" style="display: none;">
+        <p>You may only cancel the ticket now. Are you sure you want to proceed with the cancellation?</p>
+        <button id="confirm-cancel">Yes, Cancel</button>
+        <button id="cancel-cancel">No, Keep Ticket</button>
+      </div>
+
+      <!-- Cancel Success Message -->
+      <div id="cancel-success-message" style="display: none;">
+        <h3>Ticket canceled successfully!</h3>
+        <p>You will be redirected to the home page shortly.</p>
       </div>
     </main>
 
@@ -107,6 +130,25 @@
           document.getElementById('selected-seats').innerText = 'No seats selected';
           document.getElementById('total-price').innerText = '0';
         }
+
+        // Check if there is a ticket stored in localStorage
+        const storedTicket = localStorage.getItem('ticket');
+        if (storedTicket) {
+          const ticket = JSON.parse(storedTicket);
+          // Show the view ticket section
+          document.getElementById('view-ticket-section').style.display = 'block';
+          document.getElementById('view-showtime-id').innerText = ticket.showtimeId;
+          document.getElementById('view-selected-seats').innerText = ticket.selectedSeats.join(', ');
+          document.getElementById('view-total-price').innerText = ticket.totalPrice;
+
+          // Enable the cancel ticket button
+          document.getElementById('cancel-purchased-ticket').style.display = 'inline-block';
+          document.getElementById('cancel-purchased-ticket').addEventListener('click', function () {
+            localStorage.removeItem('ticket');
+            alert('Your ticket has been canceled.');
+            location.reload(); // Reload the page after cancellation
+          });
+        }
       };
 
       // Payment form validation and booking summary display
@@ -134,22 +176,54 @@
           document.getElementById('booking-summary').style.display = 'block'; // Show booking summary
 
           // Populate booking summary
-          document.getElementById('summary-showtime-id').innerText = getQueryParam('showtime_id');
-          const selectedSeats = getQueryParam('selectedSeats');
-          document.getElementById('summary-selected-seats').innerText = selectedSeats
-            ? selectedSeats.replace(/,/g, ', ')
-            : 'No seats selected';
-
-          // Get and display the total price in the summary
-          const seatCount = selectedSeats.split(',').length;
+          const showtimeId = getQueryParam('showtime_id');
+          const selectedSeats = getQueryParam('selectedSeats').split(',');
+          const seatCount = selectedSeats.length;
           const totalPrice = seatCount * pricePerSeat;
+          document.getElementById('summary-showtime-id').innerText = showtimeId;
+          document.getElementById('summary-selected-seats').innerText = selectedSeats.join(', ');
           document.getElementById('summary-total-price').innerText = totalPrice;
 
-          // Redirect to the home page after a short delay
-          setTimeout(function () {
-            window.location.href = 'index.html'; // Redirect to homepage
-          }, 10000); // 10 seconds delay for viewing the booking summary
+          // Store the ticket in localStorage
+          const ticket = {
+            showtimeId: showtimeId,
+            selectedSeats: selectedSeats,
+            totalPrice: totalPrice
+          };
+          localStorage.setItem('ticket', JSON.stringify(ticket));
+
+          // Enable cancel button
+          document.getElementById('cancel-ticket').style.display = 'inline-block';
         }
+      });
+
+      // Show cancel confirmation when cancel button is clicked
+      document.getElementById('cancel-ticket').addEventListener('click', function () {
+        // Hide the cancel ticket button
+        document.getElementById('cancel-ticket').style.display = 'none';
+
+        // Show cancel confirmation
+        document.getElementById('cancel-confirmation').style.display = 'block';
+      });
+
+      // Handle cancellation confirmation
+      document.getElementById('confirm-cancel').addEventListener('click', function () {
+        // Remove ticket from localStorage
+        localStorage.removeItem('ticket');
+
+        // Hide the confirmation and show success message
+        document.getElementById('cancel-confirmation').style.display = 'none';
+        document.getElementById('cancel-success-message').style.display = 'block';
+
+        // Redirect after 3 seconds
+        setTimeout(function () {
+          window.location.href = 'index.html'; // Redirect to home page
+        }, 3000);
+      });
+
+      // Handle cancel without cancellation
+      document.getElementById('cancel-cancel').addEventListener('click', function () {
+        document.getElementById('cancel-confirmation').style.display = 'none';
       });
     </script>
   </body>
