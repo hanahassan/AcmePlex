@@ -374,7 +374,6 @@ function fetchMovies() {
                 movieCard.innerHTML = `
                     <img src="${posterUrl}" alt="${movie.title}" />
                     <h3>${movie.title}</h3>
-                    <a href="#" class="watch-trailer">Watch trailer</a>
                 `;
                 movieGrid.appendChild(movieCard);
             });
