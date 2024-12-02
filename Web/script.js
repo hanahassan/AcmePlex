@@ -122,16 +122,21 @@ signupForm.addEventListener("submit", (event) => {
 });
 
 // Show profile section
+// Show profile section
 function showProfile() {
     loginForm.classList.add("hidden");
     signupForm.classList.add("hidden");
     loginPrompt.classList.add("hidden");
     accountSection.classList.add("active");
 
+    // Retrieve user data from localStorage
+    const storedEmail = localStorage.getItem("userEmail");
+    const storedName = localStorage.getItem("userName") || "John Doe"; // Default to "John Doe" if name is not set
+
     profileSection.innerHTML = `
         <div class="profile-header">
-            <h2>John Doe</h2>
-            <p>johndoe@gmail.com</p>
+            <h2>${storedName}</h2>
+            <p>${storedEmail}</p>
         </div>
         <div class="profile-options">
             <a href="account-info.html" class="profile-link">
@@ -414,69 +419,47 @@ function fetchTheatres() {
         .catch(error => console.error('Error fetching theatres:', error));
 }
 
+// Handle signup form submission
+// Handle signup form submission
+signupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const signupEmail = document.getElementById("signupEmail").value;
+    const signupPassword = document.getElementById("signupPassword").value;
+    const confirmSignupPassword = document.getElementById("confirmSignupPassword").value;
+    const signupName = document.getElementById("signupName").value; // Name input
 
+    if (signupPassword !== confirmSignupPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const searchForm = document.getElementById("searchForm");
-    const searchInput = document.getElementById("searchInput");
-    const searchResults = document.getElementById("searchResults");
+    // Save to localStorage
+    localStorage.setItem("userEmail", signupEmail);
+    localStorage.setItem("userPassword", signupPassword);
+    localStorage.setItem("userName", signupName); // Save user's name
 
-    if (searchForm) {
-        searchForm.addEventListener("submit", (event) => {
-            event.preventDefault(); // Prevent form submission
+    alert(`Signup successful! Welcome, ${signupName}`);
+    localStorage.setItem("isLoggedIn", "true");
 
-            const query = searchInput.value.trim().toLowerCase(); // Get search query
-            searchResults.innerHTML = ""; // Clear previous results
+    window.location.href = "index.html"; // Redirect or update page
+});
 
-            if (query) {
-                fetch(`http://localhost:8080/movies/search?q=${encodeURIComponent(query)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(results => {
-                        searchResults.innerHTML = ""; // Clear previous results
-                        if (results.length > 0) {
-                            const filteredResults = results.filter(movie => {
-                                const title = movie.title.toLowerCase();
-                                return query.split('').every(char => title.includes(char));
-                            });
+// Handle login form submission
+loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-                            if (filteredResults.length > 0) {
-                                filteredResults.forEach(movie => {
-                                    const movieItem = document.createElement("div");
-                                    movieItem.classList.add("movie-item");
-                                    movieItem.innerHTML = `
-                                        <h3>${movie.title}</h3>
-                                        <button class="view-showtimes-button" data-movie-id="${movie.id}">View Showtimes</button>
-                                    `;
-                                    searchResults.appendChild(movieItem);
-                                });
+    // Check credentials against stored data
+    const storedEmail = localStorage.getItem("userEmail");
+    const storedPassword = localStorage.getItem("userPassword");
 
-                                // Add click event listeners for each movie
-                                document.querySelectorAll(".view-showtimes-button").forEach(button => {
-                                    button.addEventListener("click", (e) => {
-                                        const movieId = e.target.getAttribute("data-movie-id");
-                                        window.location.href = `showtimes.html?movie_id=${movieId}`;
-                                    });
-                                });
-                            } else {
-                                searchResults.innerHTML = `<p>No results found for "${query}".</p>`;
-                            }
-                        } else {
-                            searchResults.innerHTML = `<p>No results found for "${query}".</p>`;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching search results:", error);
-                        searchResults.innerHTML = `<p>There was an error fetching search results. Please try again later.</p>`;
-                    });
-
-            } else {
-                searchResults.innerHTML = `<p>Please enter a search term.</p>`;
-            }
-        });
+    if (username === storedEmail && password === storedPassword) {
+        localStorage.setItem("isLoggedIn", "true");
+        showProfile();
+        accountSection.classList.remove("active"); // Hide dropdown
+        window.location.href = "index.html"; // Redirect to homepage
+    } else {
+        alert("Invalid login credentials.");
     }
 });
