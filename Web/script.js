@@ -365,38 +365,21 @@ function fetchMovies() {
             const movieGrid = document.querySelector('.movie-grid');
             movieGrid.innerHTML = ''; // Clear existing content
 
-            movies.forEach(movie => {
+            movies.forEach((movie, index) => {
+                // Determine which image to use
+                const posterUrl = movie.posterUrl || `images/filler${index + 1}.png`; // Unique fallback for each movie
+
                 const movieCard = document.createElement('div');
                 movieCard.classList.add('movie-card');
                 movieCard.innerHTML = `
-                    <img src="${movie.posterUrl || 'images/filler1.png'}" alt="${movie.title}" />
+                    <img src="${posterUrl}" alt="${movie.title}" />
                     <h3>${movie.title}</h3>
-                    <a href="#" class="watch-trailer">Watch trailer</a>
                 `;
                 movieGrid.appendChild(movieCard);
             });
-
-            // Populate Carousel
-            const slider = document.querySelector('.slider');
-            const sliderNav = document.querySelector('.slider-nav');
-            slider.innerHTML = '';  // Clear any existing images
-            sliderNav.innerHTML = '';  // Clear any existing nav links
-
-            movies.forEach((movie, index) => {
-                // Create the slide element using the movie title or image
-                const slide = document.createElement('img');
-                slide.src = movie.posterUrl || "images/image1.jpg";  // Fallback to a default image if posterUrl is not available
-                slide.alt = `Carousel Image ${index + 1}`;
-                slide.id = `slide-${index + 1}`;
-                slider.appendChild(slide);
-
-                // Create the navigation link
-                const navLink = document.createElement('a');
-                navLink.href = `#slide-${index + 1}`;
-                sliderNav.appendChild(navLink);
-            });
         })
         .catch(error => console.error('Error fetching movies:', error));
+
 }
 
 function fetchTheatres() {
