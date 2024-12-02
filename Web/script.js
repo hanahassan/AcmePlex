@@ -165,12 +165,13 @@ function handleLogout() {
 }
 // Search Functionality
 const movies = [
-    { title: "The Avengers", genre: "Action" },
-    { title: "Titanic", genre: "Romance" },
-    { title: "Inception", genre: "Sci-Fi" },
-    { title: "The Lion King", genre: "Animation" },
-    { title: "Frozen", genre: "Animation" },
+    { title: "The Avengers", genre: "Action", image: 'images/TheAvengers.jpg'},
+    { title: "Titanic", genre: "Romance", image: 'images/Titanic.jpg' },
+    { title: "Inception", genre: "Sci-Fi", image: 'images/Inception.jpg' },
+    { title: "The Lion King", genre: "Animation", image: 'images/LionKing.jpg' },
+    { title: "Frozen", genre: "Animation", image: 'images/Frozen.jpg' },
 ];
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const searchForm = document.getElementById("searchForm");
@@ -197,7 +198,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         movieItem.classList.add("movie-item");
                         movieItem.innerHTML = `
                             <h3>${movie.title}</h3>
+                            <img src="${movie.image}" alt="${movie.title} Image" class="movie-image">
                             <p>Genre: ${movie.genre}</p>
+                            <button class="select-movie-button" onclick="selectMovie(${movie.id})">Select Movie</button>
                         `;
                         searchResults.appendChild(movieItem);
                     });
@@ -211,6 +214,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Function to handle "Select Movie" action
+function selectMovie(movieId) {
+    window.location.href = `showtimes.html?movie_id=${movieId}`;
+}
 
 // Populate Personal Information
 function populatePersonalInfo() {
