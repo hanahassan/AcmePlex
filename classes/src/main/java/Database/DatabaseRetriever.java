@@ -10,6 +10,33 @@ public class DatabaseRetriever {
         // Prevent instantiation
     }
 
+    public static List<String[]> getMoviesByTheaterID(int theaterID) {
+        String sql = "SELECT M.MovieID, M.Title FROM Movies M " +
+                     "JOIN Showtimes S ON M.MovieID = S.MovieID " +
+                     "WHERE S.TheaterID = ?";
+        List<String[]> movies = new ArrayList<>();
+        
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            // Set the theaterID parameter in the query
+            pstmt.setInt(1, theaterID);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Collect movie IDs and titles into the list
+                while (rs.next()) {
+                    String movieID = String.valueOf(rs.getInt("MovieID"));
+                    String title = rs.getString("Title");
+                    movies.add(new String[]{movieID, title});
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return movies;
+    }
+
     public static List<String[]> getAllMovies() {
         String sql = "SELECT MovieID, Title FROM Movies";
         List<String[]> movies = new ArrayList<>();
